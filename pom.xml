@@ -11,8 +11,8 @@
     <groupId>com.jacyirice.pw2</groupId>
     <artifactId>aula11</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>aula11</name>
-    <description>Tarefa aula 07/04/22 - CARRINHO DE COMPRAS COM VALIDAÇÃO</description>
+    <name>Ecommerce - PW2 - IFTO</name>
+    <description>Ecommerce desenvolvido na aula de PW2 no IFTO</description>
     <properties>
         <java.version>11</java.version>
     </properties>
