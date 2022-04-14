@@ -13,6 +13,7 @@ import com.jacyirice.pw2.aula11.models.repository.ClientePFRepository;
 import com.jacyirice.pw2.aula11.models.repository.ProdutoRepository;
 import com.jacyirice.pw2.aula11.models.repository.VendaRepository;
 import java.time.LocalDate;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,8 +52,8 @@ public class VendaController {
     Venda venda;
 
     @GetMapping("/list")
-    public ModelAndView listar(@RequestParam(value = "cliente_id", defaultValue = "0") Integer cliente_id, ModelMap model) {
-        if (cliente_id == 0) {
+    public ModelAndView listar(@RequestParam(value = "cliente_id", required = false) Integer cliente_id, ModelMap model) {
+        if (cliente_id == null || cliente_id == 0) {
             model.addAttribute("vendas", repository.vendas());
         } else {
             model.addAttribute("vendas", repository.findByClienteId(cliente_id));
@@ -62,25 +63,44 @@ public class VendaController {
 
     @PostMapping("/add-item")
     public ModelAndView addItem(@Valid ItemVenda itemVenda, BindingResult result, RedirectAttributes redirectAttributes) {
+        Integer produtoId = itemVenda.getProduto().getId();
+
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("errors", result.getAllErrors().get(0).getDefaultMessage());
-            redirectAttributes.addFlashAttribute("produto_id_error", itemVenda.getProduto().getId());
+            redirectAttributes.addFlashAttribute("produto_id_error", produtoId);
             return new ModelAndView("redirect:/produto/list");
         }
-        Produto produto = repositoryP.produto(itemVenda.getProduto().getId());
 
-        itemVenda.setProduto(produto);
-        itemVenda.setVenda(venda);
-        venda.getItensVenda().add(itemVenda);
+        Optional<ItemVenda> itemVendaInCartOP = venda.getItemVendaByProdutoId(produtoId);
 
-        redirectAttributes.addFlashAttribute("message", produto.getDescricao() + " adicionado ao carrinho!");
-        redirectAttributes.addFlashAttribute("showAlert", true);
+        if (itemVendaInCartOP.isPresent()) {
+            ItemVenda itemVendaInCart = itemVendaInCartOP.get();
+
+            if (itemVenda.getQtd() < 1) {
+                redirectAttributes.addFlashAttribute("errors", "Remova o produto no carrinho");
+                redirectAttributes.addFlashAttribute("produto_id_error", produtoId);
+                return new ModelAndView("redirect:/produto/list");
+            }
+
+            itemVendaInCart.setQtd(itemVenda.getQtd());
+            redirectAttributes.addFlashAttribute("message", "Quatidade atualizada no carrinho!");
+        } else {
+            Produto produto = repositoryP.produto(produtoId);
+            itemVenda.setProduto(produto);
+            itemVenda.setVenda(venda);
+            venda.getItensVenda().add(itemVenda);
+            redirectAttributes.addFlashAttribute("message", produto.getDescricao() + " adicionado ao carrinho!");
+        }
+
+        redirectAttributes.addFlashAttribute("alert", "success");
         return new ModelAndView("redirect:/produto/list");
     }
 
     @GetMapping("/del-item/{id}")
     public ModelAndView delItem(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
         venda.getItensVenda().remove(id);
+        redirectAttributes.addFlashAttribute("alert", "warning");
+        redirectAttributes.addFlashAttribute("message", "Produto removido do carrinho!");
         return new ModelAndView("redirect:/venda/carrinho");
     }
 
