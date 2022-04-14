@@ -6,13 +6,15 @@
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Data</th>
+                <th>Data</th>                
+                <th>Cliente</th>
                 <th>Total</th>
             </tr>
         </thead>
         <tr th:each="i : ${vendas}">
             <td th:text="${i.id}"> </td>
-            <td th:text="${#temporals.format(i.data, 'dd/MM/yyyy')}"> </td>
+            <td th:text="${#temporals.format(i.data, 'dd/MM/yyyy')}"> </td>   
+            <td th:text="${i.cliente.nome}"> </td>
             <td th:text="${#numbers.formatCurrency(i.total())}"> </td>
             <td><a th:href="@{/venda/detail/{id}(id=${i.id})}">Detalhes</a></td>
         </tr>
