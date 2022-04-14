@@ -1,0 +1,25 @@
+<div th:insert="fragments/header :: modelheader"></div>
+<div class="container">
+
+    <h1>Cliente PF</h1>
+    <form th:action="${clientePF.id == null} ? @{/clientePF/save} : @{/clientePF/update}" th:object="${clientePF}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-row">
+            <div class="col">
+                <input class="form-control" th:classappend="${#fields.hasErrors('nome') ? 'is-invalid' : ''}"
+                       type="text" th:field="*{nome}"  placeholder="Nome">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"/>
+            </div>
+            <div class="col">
+                <input class="form-control" th:classappend="${#fields.hasErrors('cpf') ? 'is-invalid' : ''}" 
+                       type="number" th:field="*{cpf}"  placeholder="CPF">
+                <div th:class="invalid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"/>
+            </div>
+        </div>
+        <br/>
+        <div class="text-right">
+            <input class="btn btn-primary" type="submit" value="Enviar">
+        </div>
+    </form>
+</div>
+<div th:insert="fragments/footer :: modelfooter"></div>

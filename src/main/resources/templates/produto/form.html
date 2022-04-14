@@ -1,0 +1,25 @@
+<div th:insert="fragments/header :: modelheader"></div>
+<div class="container">
+
+    <h1>Produtos</h1>
+    <form th:action="${produto.id == null} ? @{/produto/save} : @{/produto/update}" th:object="${produto}" method="post">
+        <input type="hidden" th:field="*{id}">
+        <div class="form-row">
+            <div class="col">
+                <input class="form-control" th:classappend="${#fields.hasErrors('descricao') ? 'is-invalid' : ''}"
+                       type="text" th:field="*{descricao}"  placeholder="Descrição">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('descricao')}" th:errors="*{descricao}"/>
+            </div>
+            <div class="col">
+                <input class="form-control" th:classappend="${#fields.hasErrors('valor') ? 'is-invalid' : ''}"
+                       type="number" min="0" step=".01" th:field="*{valor}"  placeholder="Valor">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('valor')}" th:errors="*{valor}"/>
+            </div>
+        </div>
+        <br/>
+        <div class="text-right">
+            <input class="btn btn-primary" type="submit" value="Enviar">
+        </div>
+    </form>
+</div>
+<div th:insert="fragments/footer :: modelfooter"></div>

@@ -1,0 +1,31 @@
+<div th:insert="fragments/header :: modelheader"></div>
+<div class="container">
+    <table class="table" border="1">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th></th>
+                <th></th>
+                <th></th>
+
+            </tr>
+        </thead>
+        <tr th:each="clientePF : ${clientesPF}">
+            <td th:text="${clientePF.id}"> </td>
+            <td th:text="${clientePF.nome}"> </td>
+            <td th:text="${clientePF.cpf}"> </td>
+            <td>
+                <a th:href="@{/venda/list?cliente_id={clientepf_id}(clientepf_id=${clientePF.id})}" >Ver vendas</a>
+            </td>
+            <td>
+                <a class="btn btn-warning" th:href="@{/clientePF/edit/{id}(id=${clientePF.id})}" >Atualizar</a>
+            </td>
+            <td>
+                <a class="btn btn-danger" th:href="@{/clientePF/remove/{id}(id=${clientePF.id})}" >Remover</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div th:insert="fragments/footer :: modelfooter"></div>

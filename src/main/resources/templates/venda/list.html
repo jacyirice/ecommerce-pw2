@@ -1,0 +1,21 @@
+<div th:insert="fragments/header :: modelheader"></div>
+<div class="container">
+    <span th:text="${!#strings.isEmpty(success)} ? ${success}"> </span>
+
+    <table class="table" border="1">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Data</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tr th:each="i : ${vendas}">
+            <td th:text="${i.id}"> </td>
+            <td th:text="${#temporals.format(i.data, 'dd/MM/yyyy')}"> </td>
+            <td th:text="${#numbers.formatCurrency(i.total())}"> </td>
+            <td><a th:href="@{/venda/detail/{id}(id=${i.id})}">Detalhes</a></td>
+        </tr>
+    </table>
+</div>
+<div th:insert="fragments/footer :: modelfooter"></div>

@@ -1,0 +1,33 @@
+<div th:insert="fragments/header :: modelheader"></div>
+<div class="container">
+    <body>
+        <ul>
+            <li>Clientes PF
+                <ul>
+                    <li><a th:href="@{/clientePF/list}">Consultar</a></li>
+                    <li><a th:href="@{/clientePF/form}">Cadastrar</a></li>
+                </ul>
+            </li>
+            
+            <li>Produtos
+                <ul>
+                    <li><a th:href="@{/produto/list}">Consultar</a></li>
+                    <li><a th:href="@{/produto/form}">Cadastrar</a></li>
+                </ul>
+            </li>
+            
+            <li>Carrinho
+                <ul>
+                    <li><a th:href="@{/venda/carrinho}">Consultar</a></li>
+                </ul>
+            </li>
+            
+            <li>Vendas
+                <ul>
+                    <li><a th:href="@{/venda/list}">Consultar</a></li>
+                </ul>
+            </li>
+
+        </ul>
+</div>
+<div th:insert="fragments/footer :: modelfooter"></div>

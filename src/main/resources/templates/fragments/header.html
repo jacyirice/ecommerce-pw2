@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org"  th:fragment="modelheader">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, user-scalable=no"/>
+        <link href="/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css" rel="stylesheet"/>        
+    </head>
+
+    <body class="jumbotron">
+        <div class="container">
+
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <a class="navbar-brand" th:href="@{/}">Home</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Produtos
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" th:href="@{/produto/list}">Listar</a>
+                                <a class="dropdown-item" th:href="@{/produto/form}">Criar</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuCleinte" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Clientes PF
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuCleinte">
+                                <a class="dropdown-item" th:href="@{/clientePF/list}">Listar</a>
+                                <a class="dropdown-item" th:href="@{/clientePF/form}">Criar</a>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/venda/carrinho}">Carrinho</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/venda/list}">Vendas</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <hr/>
+
+
