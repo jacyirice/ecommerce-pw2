@@ -69,11 +69,19 @@ public class Venda implements Serializable {
     public void setData(LocalDate data) {
         this.data = data;
     }
-    
+
     public Optional<ItemVenda> getItemVendaByProdutoId(Integer id) {
         return itensVenda.stream().filter(iv -> Objects.equals(iv.getProduto().getId(), id)).findFirst();
     }
-    
+
+    public Integer getQtdItemVendaByProdutoId(Integer id) {
+        Optional<ItemVenda> itemVendaOp = getItemVendaByProdutoId(id);
+        if (itemVendaOp.isPresent()) {
+            return itemVendaOp.get().getQtd();
+        }
+        return 0;
+    }
+
     public List<ItemVenda> getItensVenda() {
         return itensVenda;
     }
