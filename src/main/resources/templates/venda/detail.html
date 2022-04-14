@@ -1,54 +1,53 @@
 <div th:insert="fragments/header :: modelheader"></div>
 <div class="container">
-
-        <h1>Dados da venda</h1>
-        <table class="table" border="1">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Data</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
+    <h1>Dados da venda</h1>
+    <table class="table" border="1">
+        <thead>
             <tr>
-                <td th:text="${venda.id}"> </td>
-                <td th:text="${#temporals.format(venda.data, 'dd/MM/yyyy')}"> </td>
-                <td th:text="${#numbers.formatCurrency(venda.total())}"> </td>
+                <th>Id</th>
+                <th>Data</th>
+                <th>Total</th>
             </tr>
-        </table>
-        <h2>Dados do cliente</h2>
-        <table class="table" border="1">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Nome</th>
-                    <th>CPF</th>
-                </tr>
-            </thead>
+        </thead>
+        <tr>
+            <td th:text="${venda.id}"> </td>
+            <td th:text="${#temporals.format(venda.data, 'dd/MM/yyyy')}"> </td>
+            <td th:text="${#numbers.formatCurrency(venda.total())}"> </td>
+        </tr>
+    </table>
+    <h2>Dados do cliente</h2>
+    <table class="table" border="1">
+        <thead>
             <tr>
-                <td th:text="${venda.cliente.id}"> </td>
-                <td th:text="${venda.cliente.nome}"> </td>
-                <td th:text="${venda.cliente.cpf}"> </td>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>CPF</th>
             </tr>
-        </table>
-        <h2>Produtos</h2>
-        <table class="table" border="1">
-            <thead>
-                <tr>
-                    <th>Descrição</th>
-                    <th>Valor</th>
-                    <th>Qtd</th>
-                    <th>Total</th>
-                </tr>
-            </thead>
-            <tr th:each="iv : ${venda.itensVenda}">
-                <td th:text="${iv.produto.descricao}"> </td>
-                <td th:text="${iv.produto.valor}"> </td>
-                <td th:text="${iv.qtd}"> </td>
-                <td th:text="${iv.total()}"> </td>
+        </thead>
+        <tr>
+            <td th:text="${venda.cliente.id}"> </td>
+            <td th:text="${venda.cliente.nome}"> </td>
+            <td th:text="${venda.cliente.cpf}"> </td>
+        </tr>
+    </table>
+    <h2>Produtos</h2>
+    <table class="table" border="1">
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Qtd</th>
+                <th>Total</th>
             </tr>
-        </table>
+        </thead>
+        <tr th:each="iv : ${venda.itensVenda}">
+            <td th:text="${iv.produto.descricao}"> </td>
+            <td th:text="${iv.produto.valor}"> </td>
+            <td th:text="${iv.qtd}"> </td>
+            <td th:text="${iv.total()}"> </td>
+        </tr>
+    </table>
 
-        <a th:href="@{/venda/list}">Voltar</a>
+    <a th:href="@{/venda/list}">Voltar</a>
 </div>
 <div th:insert="fragments/footer :: modelfooter"></div>

@@ -1,6 +1,6 @@
 <div th:insert="fragments/header :: modelheader"></div>
 <div class="container">
-    <div class="alert alert-success" role="alert" th:if="${showAlert == true}" th:text="${message}"/>
+    <div class="alert alert-success" role="alert" th:if="${alert == 'success'}" th:text="${message}"/>
     <table class="table" border="1">
         <thead>
             <tr>
@@ -18,7 +18,8 @@
                     <input type="hidden" th:name="produto.id" th:value="${i.id}">
                     <div class="form-group mx-sm-3 mb-2">
                         <input class="form-control" th:classappend="${!#strings.isEmpty(produto_id_error) and produto_id_error eq i.id ? 'is-invalid' : ''}"
-                               type="number" th:name="qtd"  placeholder="Quant">
+                               type="number" th:name="qtd" th:value="${session.venda.getQtdItemVendaByProdutoId(i.id)}"
+                               placeholder="Quant">
                         <div class="invalid-feedback" th:if="${!#strings.isEmpty(produto_id_error) and produto_id_error eq i.id}"
                              th:text="${errors}"/>
                     </div>

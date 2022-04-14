@@ -1,6 +1,6 @@
 <div th:insert="fragments/header :: modelheader"></div>
 <div class="container">
-    <span th:text="${!#strings.isEmpty(success)} ? ${success}"> </span>
+    <div class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(success)}" th:text="${success}"/>
 
     <table class="table" border="1">
         <thead>

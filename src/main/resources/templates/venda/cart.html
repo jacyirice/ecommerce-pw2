@@ -1,5 +1,8 @@
 <div th:insert="fragments/header :: modelheader"></div>
 <div class="container">
+    <div class="alert alert-success" role="alert" th:if="${alert == 'success'}" th:text="${message}"/>
+    <div class="alert alert-warning" role="alert" th:if="${alert == 'warning'}" th:text="${message}"/>
+
     <table class="table" border="1">
         <thead>
             <tr>
