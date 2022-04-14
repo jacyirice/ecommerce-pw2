@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -32,8 +33,15 @@ public class ClientePFController {
     ClientePFRepository repository;
 
     @GetMapping("/list")
-    public ModelAndView listar(ModelMap model) {
-        model.addAttribute("clientesPF", repository.clientesPF());
+    public ModelAndView listar(
+            @RequestParam(value = "nome", required = false) String nome,
+            ModelMap model
+    ) {
+        if (nome!= null && !nome.isBlank()){
+            model.addAttribute("clientesPF", repository.findByName(nome));
+        } else {
+            model.addAttribute("clientesPF", repository.clientesPF());
+        }
 
         return new ModelAndView("/clientePF/list", model);
     }
