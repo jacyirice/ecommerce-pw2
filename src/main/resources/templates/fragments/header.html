@@ -8,7 +8,9 @@ and open the template in the editor.
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, user-scalable=no"/>
-        <link href="/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css" rel="stylesheet"/>        
+        <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.min.css}" /> 
+        <link th:rel="stylesheet" th:href="@{/webjars/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker3.min.css}"/>
+
     </head>
 
     <body class="jumbotron">

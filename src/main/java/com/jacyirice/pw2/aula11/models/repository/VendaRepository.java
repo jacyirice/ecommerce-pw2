@@ -7,6 +7,7 @@ package com.jacyirice.pw2.aula11.models.repository;
 
 import com.jacyirice.pw2.aula11.models.entity.Produto;
 import com.jacyirice.pw2.aula11.models.entity.Venda;
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class VendaRepository {
+
     @PersistenceContext
     private EntityManager em;
 
@@ -26,14 +28,23 @@ public class VendaRepository {
         Query query = em.createQuery("from Venda");
         return query.getResultList();
     }
-    
+
+    public List<Venda> findByDate(LocalDate dataStart, LocalDate dataStop) {
+        String hql = "from Venda where data BETWEEN :dataStart AND :dataStop";
+        Query query = em.createQuery(hql, Venda.class);
+        query.setParameter("dataStart", dataStart);
+        query.setParameter("dataStop", dataStop);
+
+        return query.getResultList();
+    }
+
     public List<Venda> findByClienteId(Integer cliente_id) {
         String hql = "from Venda where id_cliente=:cliente_id";
         Query query = em.createQuery(hql, Venda.class);
         query.setParameter("cliente_id", cliente_id);
         return query.getResultList();
     }
-    
+
     public void save(Venda venda) {
         em.persist(venda);
     }

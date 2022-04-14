@@ -1,6 +1,15 @@
 <div th:insert="fragments/header :: modelheader"></div>
+
 <div class="container">
     <span th:text="${!#strings.isEmpty(success)} ? ${success}"> </span>
+    <form  th:action="@{/venda/list}" method="GET" class="form-inline input-daterange input-group" id="datepicker">
+        <span class="input-group-addon mr-sm-2">De</span>
+        <input type="text" class="input-sm form-control mr-sm-2" name="dataStart" required/>
+        <span class="input-group-addon mr-sm-2">Até</span>
+        <input type="text" class="input-sm form-control mr-sm-2" name="dataStop" required />
+        <button class="btn btn-outline-success " type="submit">Filtrar</button>
+    </form>
+
 
     <table class="table" border="1">
         <thead>
@@ -21,3 +30,11 @@
     </table>
 </div>
 <div th:insert="fragments/footer :: modelfooter"></div>
+<script>
+    $('.input-daterange').datepicker({
+        endDate: "today",
+        todayBtn: "linked",
+        language: "pt-BR",
+        format: "dd/mm/yyyy",
+    });
+</script>

@@ -51,11 +51,18 @@ public class VendaController {
     Venda venda;
 
     @GetMapping("/list")
-    public ModelAndView listar(@RequestParam(value = "cliente_id", defaultValue = "0") Integer cliente_id, ModelMap model) {
-        if (cliente_id == 0) {
-            model.addAttribute("vendas", repository.vendas());
-        } else {
+    public ModelAndView listar(
+            @RequestParam(value = "cliente_id", required = false) Integer cliente_id,
+            @RequestParam(value = "dataStart", required = false) LocalDate dataStart,
+            @RequestParam(value = "dataStop", required = false) LocalDate dataStop,
+            ModelMap model
+    ) {
+        if (cliente_id != null && cliente_id > 0) {
             model.addAttribute("vendas", repository.findByClienteId(cliente_id));
+        } else if (dataStart != null && dataStop != null) {
+            model.addAttribute("vendas", repository.findByDate(dataStart, dataStop));
+        } else {
+            model.addAttribute("vendas", repository.vendas());
         }
         return new ModelAndView("/venda/list", model);
     }
