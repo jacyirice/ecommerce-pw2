@@ -6,6 +6,8 @@
 package com.jacyirice.pw2.aula11.models.repository;
 
 import com.jacyirice.pw2.aula11.models.entity.ClientePF;
+import com.jacyirice.pw2.aula11.models.entity.Venda;
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class ClientePFRepository {
+
     @PersistenceContext
     private EntityManager em;
 
@@ -25,7 +28,14 @@ public class ClientePFRepository {
         Query query = em.createQuery("from ClientePF");
         return query.getResultList();
     }
-    
+
+    public List<Venda> findByName(String nome) {
+        String hql = "from ClientePF where nome LIKE :nome";
+        Query query = em.createQuery(hql, ClientePF.class);
+        query.setParameter("nome", "%"+nome+"%");
+        return query.getResultList();
+    }
+
     public void save(ClientePF clientePF) {
         em.persist(clientePF);
     }

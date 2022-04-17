@@ -1,5 +1,9 @@
 <div th:insert="fragments/header :: modelheader"></div>
 <div class="container">
+    <form th:action="@{/clientePF/list}" method="GET" class="form-inline justify-content-end">
+        <input class="form-control mr-sm-2" type="search" name="nome" placeholder="Pesquisar nome" aria-label="Search">
+        <button class="btn btn-outline-success " type="submit">Pesquisar</button>
+    </form>
     <table class="table" border="1">
         <thead>
             <tr>
