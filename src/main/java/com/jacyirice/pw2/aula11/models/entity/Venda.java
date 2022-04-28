@@ -73,6 +73,10 @@ public class Venda implements Serializable {
     public Optional<ItemVenda> getItemVendaByProdutoId(Integer id) {
         return itensVenda.stream().filter(iv -> Objects.equals(iv.getProduto().getId(), id)).findFirst();
     }
+    public int getIndexItemVendaByProdutoId(Integer id) {
+        Optional<ItemVenda> itemVendaOp = getItemVendaByProdutoId(id);
+        return itemVendaOp.isPresent() ? itensVenda.indexOf(itemVendaOp.get()) : -1;
+    }
 
     public Integer getQtdItemVendaByProdutoId(Integer id) {
         Optional<ItemVenda> itemVendaOp = getItemVendaByProdutoId(id);
