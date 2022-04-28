@@ -6,12 +6,12 @@
         <input type="hidden" th:field="*{id}">
         <div class="form-row">
             <div class="col">
-                <input class="form-control" th:classappend="${#fields.hasErrors('nome') ? 'is-invalid' : ''}"
+                <input class="form-control" th:errorclass="is-invalid"
                        type="text" th:field="*{nome}"  placeholder="Nome">
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"/>
             </div>
             <div class="col">
-                <input class="form-control" th:classappend="${#fields.hasErrors('cpf') ? 'is-invalid' : ''}" 
+                <input class="form-control" th:errorclass="is-invalid"
                        type="number" th:field="*{cpf}"  placeholder="CPF">
                 <div th:class="invalid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"/>
             </div>
