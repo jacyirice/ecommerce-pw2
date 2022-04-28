@@ -27,9 +27,9 @@ public class ItemVenda  implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Integer id;
-//    @Min(value=1, message = "oi")
+    @Min(1)
     @NotNull
-    private Double qtd;
+    private Integer qtd;
 
     @ManyToOne
     @JoinColumn(name = "id_produto")
@@ -47,15 +47,15 @@ public class ItemVenda  implements Serializable{
         this.id = id;
     }
     
-    public Double getQtd() {
+    public Integer getQtd() {
         return qtd;
     }
 
-    public void setQtd(Double qtd) {
+    public void setQtd(Integer qtd) {
         this.qtd = qtd;
     }
     
-    public void addQtd(Double qtd) {
+    public void addQtd(Integer qtd) {
         this.qtd += qtd;
     }
 

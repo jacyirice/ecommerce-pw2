@@ -20,9 +20,9 @@ import javax.validation.constraints.NotBlank;
 @PrimaryKeyJoinColumn(name = "id_cliente")
 public class ClientePF extends Cliente implements Serializable {
 
-    @NotBlank(message = "CPF é obrigatorio")
+    @NotBlank
     private String cpf;
-    @NotBlank(message = "Nome é obrigatorio")
+    @NotBlank
     private String nome;
 
     public String getCpf() {

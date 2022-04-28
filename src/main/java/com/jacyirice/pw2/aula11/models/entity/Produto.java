@@ -30,9 +30,9 @@ public class Produto implements Serializable {
     @NotBlank(message = "Digite uma descrição")
     private String descricao;
     
-    @DecimalMin(value="0.01", message = "Digite um valor maior que zero")
-    @Digits(integer = 15,fraction = 2, message = "Utilize o formato 0.00")
-    @NotNull(message = "Valor não pode ser nulo")
+    @DecimalMin("0.01")
+    @Digits(integer = 15,fraction = 2)
+    @NotNull
     private Double valor;
 
     public Produto() {
