@@ -4,7 +4,8 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html xmlns:th="http://www.thymeleaf.org"  th:fragment="modelheader">
+<html xmlns:th="http://www.thymeleaf.org"  th:fragment="modelheader"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, user-scalable=no"/>
@@ -50,6 +51,14 @@ and open the template in the editor.
                         </li>
                     </ul>
                 </div>
+                <div class="badge badge-primary text-wrap">
+                    Olá <span sec:authentication="name">
+                </div>
+                <form th:action="@{/logout}" method="post" class="navbar-form navbar-right my-2 my-lg-0">
+                    <button type="submit" class="btn btn-dark"> 
+                        Sair
+                    </button>
+                </form>
             </nav>
             <hr/>
 
