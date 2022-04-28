@@ -71,6 +71,8 @@ public class VendaController {
     @PostMapping("/add-item")
     public ModelAndView addItem(@Valid ItemVenda itemVenda, BindingResult result, RedirectAttributes redirectAttributes) {
         Integer produtoId = itemVenda.getProduto().getId();
+        
+        redirectAttributes.addFlashAttribute("alert", "danger");
 
         if (result.hasErrors()) {
             redirectAttributes.addFlashAttribute("errors", result.getAllErrors().get(0).getDefaultMessage());
@@ -83,15 +85,20 @@ public class VendaController {
         if (itemVendaInCartOP.isPresent()) {
             ItemVenda itemVendaInCart = itemVendaInCartOP.get();
 
-            if (itemVenda.getQtd() < 1) {
-                redirectAttributes.addFlashAttribute("errors", "Remova o produto no carrinho");
+            if (itemVendaInCart.getQtd() + itemVenda.getQtd() < 1) {
+                redirectAttributes.addFlashAttribute("errors", "Remova o produto no carrinho!");
                 redirectAttributes.addFlashAttribute("produto_id_error", produtoId);
                 return new ModelAndView("redirect:/produto/list");
             }
 
-            itemVendaInCart.setQtd(itemVenda.getQtd());
+            itemVendaInCart.addQtd(itemVenda.getQtd());
             redirectAttributes.addFlashAttribute("message", "Quatidade atualizada no carrinho!");
         } else {
+            if (itemVenda.getQtd() < 1) {
+                redirectAttributes.addFlashAttribute("errors", "Não é possivel remover o produto!");
+                redirectAttributes.addFlashAttribute("produto_id_error", produtoId);
+                return new ModelAndView("redirect:/produto/list");
+            }
             Produto produto = repositoryP.produto(produtoId);
             itemVenda.setProduto(produto);
             itemVenda.setVenda(venda);
