@@ -1,6 +1,8 @@
 <div th:insert="fragments/header :: modelheader"></div>
 <div class="container">
     <div class="alert alert-success" role="alert" th:if="${alert == 'success'}" th:text="${message}"/>
+    <div class="alert alert-danger" role="alert" th:if="${alert == 'danger'}" th:text="${errors} + ' Id do produto: ' + ${produto_id_error}"/>
+
     <table class="table" border="1">
         <thead>
             <tr>
@@ -14,21 +16,31 @@
             <td th:text="${i.descricao}"> </td>
             <td th:text="${i.valor}"> </td>
             <td>
-                <form class="form-inline" th:action="@{/venda/add-item}" method="post" th:object="${itemVenda}">
-                    <input type="hidden" th:name="produto.id" th:value="${i.id}">
-                    <div class="form-group mx-sm-3 mb-2">
-                        <input class="form-control" th:classappend="${!#strings.isEmpty(produto_id_error) and produto_id_error eq i.id ? 'is-invalid' : ''}"
-                               type="number" th:name="qtd" th:value="${session.venda.getQtdItemVendaByProdutoId(i.id)}"
-                               placeholder="Quant">
-                        <div class="invalid-feedback" th:if="${!#strings.isEmpty(produto_id_error) and produto_id_error eq i.id}"
-                             th:text="${errors}"/>
-                    </div>
-
-                    <input class="btn btn-primary mb-2" type="submit" value="Adicionar ao carrinho">
-                </form> 
+                <div class="form-inline">
+                    <form th:action="@{/venda/add-item}" method="post" th:object="${itemVenda}">
+                        <input type="hidden" th:name="produto.id" th:value="${i.id}"/>
+                        <input type="hidden" th:name="qtd" th:value="1"/>
+                        <input class="btn btn-danger mb-2" type="submit" value="-" onclick="DoSubmitSubItem(this)" th:if="${session.venda != null and session.venda.getQtdItemVendaByProdutoId(i.id) > 1}">
+                        <a class="btn btn-danger mb-2" th:href="@{/venda/del-item/{id}(id=${session.venda.getIndexItemVendaByProdutoId(i.id)})}" th:if="${session.venda != null and session.venda.getQtdItemVendaByProdutoId(i.id) == 1 and session.venda.getIndexItemVendaByProdutoId(i.id) > -1}">Remover</a>
+                        <input class="form-control"
+                               type="number" th:value="${session.venda != null ? session.venda.getQtdItemVendaByProdutoId(i.id) : 0}"
+                               disabled/>
+                        <input class="btn btn-success mb-2" type="submit" value="+" onclick="DoSubmitAddItem(this)">
+                    </form>
+                </div>
             </td>
         </tr>
     </table>
     <br/>
 </div>
 <div th:insert="fragments/footer :: modelfooter"></div>
+<script>
+    function DoSubmitAddItem(t) {
+        t.parentNode.querySelector('[name="qtd"]').value = '1';
+        return true;
+    }
+    function DoSubmitSubItem(t) {
+        t.parentNode.querySelector('[name="qtd"]').value = '-1';
+        return true;
+    }
+</script>
