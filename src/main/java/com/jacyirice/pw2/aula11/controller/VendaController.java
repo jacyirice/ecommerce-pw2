@@ -80,14 +80,16 @@ public class VendaController {
         itemVenda.setVenda(venda);
         venda.getItensVenda().add(itemVenda);
 
-        redirectAttributes.addFlashAttribute("message", produto.getDescricao() + " adicionado ao carrinho!");
-        redirectAttributes.addFlashAttribute("showAlert", true);
+        redirectAttributes.addFlashAttribute("alert_message", produto.getDescricao() + " adicionado ao carrinho!");
+        redirectAttributes.addFlashAttribute("alert_type", "success");
         return new ModelAndView("redirect:/produto/list");
     }
 
     @GetMapping("/del-item/{id}")
     public ModelAndView delItem(@PathVariable("id") int id, RedirectAttributes redirectAttributes) {
         venda.getItensVenda().remove(id);
+        redirectAttributes.addFlashAttribute("alert_type", "warning");
+        redirectAttributes.addFlashAttribute("alert_message", "Produto removido do carrinho!");
         return new ModelAndView("redirect:/venda/carrinho");
     }
 
@@ -116,7 +118,8 @@ public class VendaController {
         repository.save(this.venda);
         this.venda.getItensVenda().clear();
 
-        redirectAttributes.addFlashAttribute("success", "Venda armazenada com sucesso");
+        redirectAttributes.addFlashAttribute("alert_type", "success");
+        redirectAttributes.addFlashAttribute("alert_message", "Venda armazenada com sucesso");
         return new ModelAndView("redirect:/venda/list");
     }
 

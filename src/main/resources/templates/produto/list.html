@@ -1,6 +1,6 @@
 <div th:insert="fragments/header :: modelheader"></div>
 <div class="container">
-    <div class="alert alert-success" role="alert" th:if="${showAlert == true}" th:text="${message}"/>
+    <div th:class="'alert alert-'+${alert_type}" role="alert" th:if="${!#strings.isEmpty(alert_type)}" th:text="${alert_message}"/>
     <table class="table" border="1">
         <thead>
             <tr>

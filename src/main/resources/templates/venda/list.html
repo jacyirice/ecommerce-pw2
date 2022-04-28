@@ -1,7 +1,8 @@
 <div th:insert="fragments/header :: modelheader"></div>
 
 <div class="container">
-    <span th:text="${!#strings.isEmpty(success)} ? ${success}"> </span>
+    <div th:class="'alert alert-'+${alert_type}" role="alert" th:if="${!#strings.isEmpty(alert_type)}" th:text="${alert_message}"/>
+
     <form  th:action="@{/venda/list}" method="GET" class="form-inline input-daterange input-group" id="datepicker">
         <span class="input-group-addon mr-sm-2">De</span>
         <input type="text" class="input-sm form-control mr-sm-2" name="dataStart" required/>
