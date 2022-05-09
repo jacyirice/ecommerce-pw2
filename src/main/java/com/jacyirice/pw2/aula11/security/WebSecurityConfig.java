@@ -28,6 +28,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.
                 authorizeRequests() //define com as requisições HTTP devem ser tratadas com relação à segurança.
                 .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/venda/list").hasAnyRole("ADMIN")
+                .antMatchers("/venda/detail/**").hasAnyRole("ADMIN")
+                .antMatchers("/clientePF/**").hasAnyRole("ADMIN")
                 .anyRequest() //define que a configuração é válida para qualquer requisição.
                 .authenticated() //define que o usuário precisa estar autenticado.
                 .and()

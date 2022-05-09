@@ -2,7 +2,7 @@
 <div class="container">
     <body>
         <ul>
-            <li>Clientes PF
+            <li  sec:authorize="hasRole('ADMIN')">Clientes PF
                 <ul>
                     <li><a th:href="@{/clientePF/list}">Consultar</a></li>
                     <li><a th:href="@{/clientePF/form}">Cadastrar</a></li>
@@ -12,7 +12,7 @@
             <li>Produtos
                 <ul>
                     <li><a th:href="@{/produto/list}">Consultar</a></li>
-                    <li><a th:href="@{/produto/form}">Cadastrar</a></li>
+                    <li sec:authorize="hasRole('ADMIN')"><a th:href="@{/produto/form}">Cadastrar</a></li>
                 </ul>
             </li>
             
@@ -22,7 +22,7 @@
                 </ul>
             </li>
             
-            <li>Vendas
+            <li sec:authorize="hasRole('ADMIN')">Vendas
                 <ul>
                     <li><a th:href="@{/venda/list}">Consultar</a></li>
                 </ul>

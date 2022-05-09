@@ -31,10 +31,10 @@ and open the template in the editor.
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" th:href="@{/produto/list}">Listar</a>
-                                <a class="dropdown-item" th:href="@{/produto/form}">Criar</a>
+                                <a class="dropdown-item" sec:authorize="hasRole('ADMIN')" th:href="@{/produto/form}">Criar</a>
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuCleinte" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Clientes PF
                             </a>
@@ -46,7 +46,7 @@ and open the template in the editor.
                         <li class="nav-item">
                             <a class="nav-link" th:href="@{/venda/carrinho}">Carrinho</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                             <a class="nav-link" th:href="@{/venda/list}">Vendas</a>
                         </li>
                     </ul>
