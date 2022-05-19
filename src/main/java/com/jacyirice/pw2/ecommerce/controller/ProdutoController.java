@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jacyirice.pw2.aula11.controller;
+package com.jacyirice.pw2.ecommerce.controller;
 
-import com.jacyirice.pw2.aula11.models.entity.Produto;
-import com.jacyirice.pw2.aula11.models.repository.ProdutoRepository;
+import com.jacyirice.pw2.ecommerce.models.entity.Produto;
+import com.jacyirice.pw2.ecommerce.models.repository.ProdutoRepository;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

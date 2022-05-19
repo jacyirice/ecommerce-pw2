@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jacyirice.pw2.aula11.models.repository;
+package com.jacyirice.pw2.ecommerce.models.repository;
 
-import com.jacyirice.pw2.aula11.models.entity.ClientePF;
-import com.jacyirice.pw2.aula11.models.entity.Venda;
+import com.jacyirice.pw2.ecommerce.models.entity.ClientePF;
+import com.jacyirice.pw2.ecommerce.models.entity.Venda;
 import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.EntityManager;

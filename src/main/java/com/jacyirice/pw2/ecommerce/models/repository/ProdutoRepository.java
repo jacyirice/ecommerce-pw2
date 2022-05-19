@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jacyirice.pw2.aula11.models.repository;
+package com.jacyirice.pw2.ecommerce.models.repository;
 
-import com.jacyirice.pw2.aula11.models.entity.ItemVenda;
+import com.jacyirice.pw2.ecommerce.models.entity.Produto;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,31 +17,31 @@ import org.springframework.stereotype.Repository;
  * @author compo
  */
 @Repository
-public class ItemVendaRepository {
+public class ProdutoRepository {
 
     @PersistenceContext
     private EntityManager em;
 
-    public List<ItemVenda> itens() {
-        Query query = em.createQuery("from ItemVenda");
+    public List<Produto> produtos() {
+        Query query = em.createQuery("from Produto");
         return query.getResultList();
     }
 
-    public void save(ItemVenda itemVenda) {
-        em.persist(itemVenda);
+    public void save(Produto produto) {
+        em.persist(produto);
     }
 
-    public ItemVenda itemVenda(Integer id) {
-        return em.find(ItemVenda.class, id);
+    public Produto produto(Integer id) {
+        return em.find(Produto.class, id);
     }
 
     public void remove(Integer id) {
-        ItemVenda itemVenda = em.find(ItemVenda.class, id);
-        em.remove(itemVenda);
+        Produto produto = em.find(Produto.class, id);
+        em.remove(produto);
     }
 
-    public void update(ItemVenda itemVenda) {
-        em.merge(itemVenda);
+    public void update(Produto produto) {
+        em.merge(produto);
     }
 
 }

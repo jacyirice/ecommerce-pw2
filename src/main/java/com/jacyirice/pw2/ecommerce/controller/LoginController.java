@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jacyirice.pw2.aula11.controller;
+package com.jacyirice.pw2.ecommerce.controller;
 
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Controller;

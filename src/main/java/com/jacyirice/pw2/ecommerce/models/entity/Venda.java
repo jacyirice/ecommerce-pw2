@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.jacyirice.pw2.aula11.models.entity;
+package com.jacyirice.pw2.ecommerce.models.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;

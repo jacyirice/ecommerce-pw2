@@ -1,4 +1,4 @@
-package com.jacyirice.pw2.aula11;
+package com.jacyirice.pw2.ecommerce;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
