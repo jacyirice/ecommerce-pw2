@@ -23,6 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    UsuarioDetailsConfig usuarioDetailsConfig;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.
@@ -42,9 +45,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureUserDetails(AuthenticationManagerBuilder builder)
             throws Exception {
-        builder
-                .inMemoryAuthentication()
-                .withUser("teste").password(new BCryptPasswordEncoder().encode("123")).roles("EDITOR", "ADMIN");
+        System.out.println(new BCryptPasswordEncoder().encode("123"));
+        builder.userDetailsService(usuarioDetailsConfig).passwordEncoder(new BCryptPasswordEncoder());
+//                .inMemoryAuthentication()
+//                .withUser("teste").password(new BCryptPasswordEncoder().encode("123")).roles("EDITOR", "ADMIN");
     }
 
     /**
