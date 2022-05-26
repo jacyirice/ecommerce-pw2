@@ -25,8 +25,9 @@
         <p th:text="${'Total da compra: '+session.venda.total()}"></p>
 
         <span th:text="${!#strings.isEmpty(error_cart)} ? ${error_cart}"> </span>
-        <form th:if="${session.venda.total()}!=0" th:action="@{/venda/save}" method="GET">
-            <div class="form-row">
+        <form th:if="${session.venda.total()}!=0" th:action="@{/venda/save}" method="GET"> 
+            <!--sec:authorize="hasAnyRole('USER')">-->
+<!--            <div class="form-row">
                 <div class="col"></div>
                 <div class="col">
                 </div>
@@ -38,7 +39,7 @@
                     <div class="invalid-feedback" th:if="${!#strings.isEmpty(error_client)}" th:text="${error_client}"/>
                 </div>
             </div>
-            <br/>
+            <br/>-->
 
 
             <input type="submit" class="btn btn-primary" value="Finalizar carrinho">

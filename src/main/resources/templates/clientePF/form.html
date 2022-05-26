@@ -15,6 +15,11 @@
                        type="number" th:field="*{cpf}"  placeholder="CPF">
                 <div th:class="invalid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}"/>
             </div>
+            <div class="col">
+                <input class="form-control" th:errorclass="is-invalid"
+                       type="text" th:field="*{usuario.password}"  placeholder="Senha">
+                <div th:class="invalid-feedback" th:if="${#fields.hasErrors('usuario.password')}" th:errors="*{usuario.password}"/>
+            </div>
         </div>
         <br/>
         <div class="text-right">
