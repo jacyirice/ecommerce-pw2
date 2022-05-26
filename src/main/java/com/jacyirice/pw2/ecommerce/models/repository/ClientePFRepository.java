@@ -36,6 +36,13 @@ public class ClientePFRepository {
         return query.getResultList();
     }
 
+    public List<ClientePF> findByCpf(String cpf) {
+        String hql = "from ClientePF where cpf=:cpf";
+        Query query = em.createQuery(hql, ClientePF.class);
+        query.setParameter("cpf", cpf);
+        return query.getResultList();
+    }
+
     public void save(ClientePF clientePF) {
         em.persist(clientePF);
     }
