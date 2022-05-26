@@ -34,13 +34,13 @@ and open the template in the editor.
                                 <a class="dropdown-item" sec:authorize="hasAnyRole('ADMIN')" th:href="@{/produto/form}">Criar</a>
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown" sec:authorize="!hasAnyRole('USER')">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuCleinte" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Clientes PF
                             </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuCleinte">
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuCleinte" >
                                 <a class="dropdown-item" th:href="@{/clientePF/list}" sec:authorize="hasAnyRole('ADMIN')">Listar</a>
-                                <a class="dropdown-item" th:href="@{/clientePF/form}">Criar</a>
+                                <a class="dropdown-item" th:href="@{/clientePF/form}" >Criar</a>
                             </div>
                         </li>
                         <li class="nav-item" >
