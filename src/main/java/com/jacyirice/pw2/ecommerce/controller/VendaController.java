@@ -13,10 +13,13 @@ import com.jacyirice.pw2.ecommerce.models.repository.ClientePFRepository;
 import com.jacyirice.pw2.ecommerce.models.repository.ProdutoRepository;
 import com.jacyirice.pw2.ecommerce.models.repository.VendaRepository;
 import java.time.LocalDate;
+import java.util.List;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -57,7 +60,11 @@ public class VendaController {
             @RequestParam(value = "dataStop", required = false) LocalDate dataStop,
             ModelMap model
     ) {
-        if (cliente_id != null && cliente_id > 0) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<ClientePF> clientespf = repositoryCientePF.findByCpf(authentication.getName());
+        if (!clientespf.isEmpty()) {
+            model.addAttribute("vendas", repository.findByClienteId(clientespf.get(0).getId()));
+        } else if (cliente_id != null && cliente_id > 0) {
             model.addAttribute("vendas", repository.findByClienteId(cliente_id));
         } else if (dataStart != null && dataStop != null) {
             model.addAttribute("vendas", repository.findByDate(dataStart, dataStop));
@@ -100,17 +107,18 @@ public class VendaController {
     }
 
     @GetMapping("/save")
-    public ModelAndView save(@RequestParam(value = "clienteId", required = false) Integer clienteId, RedirectAttributes redirectAttributes) {
-        if (clienteId == null) {
-            redirectAttributes.addFlashAttribute("error_client", "Selecione um cliente");
-            return new ModelAndView("redirect:/venda/carrinho");
-        }
+    public ModelAndView save(RedirectAttributes redirectAttributes) {
+//        if (clienteId == null) {
+//            redirectAttributes.addFlashAttribute("error_client", "Selecione um cliente");
+//            return new ModelAndView("redirect:/venda/carrinho");
+//        }
         if (this.venda.getItensVenda().isEmpty()) {
             redirectAttributes.addFlashAttribute("error_cart", "Carrinho vazio");
             return new ModelAndView("redirect:/venda/carrinho");
         }
 
-        ClientePF clientepf = repositoryCientePF.clientePF(clienteId);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ClientePF clientepf = repositoryCientePF.findByCpf(authentication.getName()).get(0);
 
         this.venda.setId(null);
         this.venda.setData(LocalDate.now());

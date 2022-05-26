@@ -6,10 +6,14 @@
 package com.jacyirice.pw2.ecommerce.controller;
 
 import com.jacyirice.pw2.ecommerce.models.entity.ClientePF;
+import com.jacyirice.pw2.ecommerce.models.entity.Usuario;
 import com.jacyirice.pw2.ecommerce.models.repository.ClientePFRepository;
+import com.jacyirice.pw2.ecommerce.models.repository.RoleRepository;
+import com.jacyirice.pw2.ecommerce.models.repository.UsuarioRepository;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -32,12 +36,18 @@ public class ClientePFController {
     @Autowired
     ClientePFRepository repository;
 
+    @Autowired
+    UsuarioRepository usuarioRepository;
+
+    @Autowired
+    RoleRepository roleRepository;
+
     @GetMapping("/list")
     public ModelAndView listar(
             @RequestParam(value = "nome", required = false) String nome,
             ModelMap model
     ) {
-        if (nome!= null && !nome.isBlank()){
+        if (nome != null && !nome.isBlank()) {
             model.addAttribute("clientesPF", repository.findByName(nome));
         } else {
             model.addAttribute("clientesPF", repository.clientesPF());
@@ -52,12 +62,22 @@ public class ClientePFController {
     }
 
     @PostMapping("/save")
-    public ModelAndView save(@Valid ClientePF clientePF, BindingResult result) {
+    public ModelAndView save(@Valid ClientePF clientePF, BindingResult result, ModelMap model) {
         if (result.hasErrors()) {
             return form(clientePF);
         }
-        repository.save(clientePF);
-        return new ModelAndView("redirect:/clientePF/list");
+
+//        Usuario u = new Usuario();
+        Usuario u = clientePF.getUsuario();
+        u.setLogin(clientePF.getCpf());
+//        u.setPassword(clientePF.getCpf());
+        u.getRoles().add(roleRepository.role("ROLE_USER"));
+//        clientePF.setUsuario(u);
+
+        repository.save(clientePF);;
+        model.addAttribute("alert_type", "success");
+        model.addAttribute("alert_message", "Usuario cadastrado com sucesso");
+        return new ModelAndView("/authentication/login");
     }
 
     @GetMapping("/remove/{id}")
