@@ -5,8 +5,7 @@
  */
 package com.jacyirice.pw2.ecommerce.models.repository;
 
-import com.jacyirice.pw2.ecommerce.models.entity.ClientePF;
-import com.jacyirice.pw2.ecommerce.models.entity.Usuario;
+import com.jacyirice.pw2.ecommerce.models.entity.Role;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -17,22 +16,14 @@ import org.springframework.stereotype.Repository;
  * @author compo
  */
 @Repository
-public class UsuarioRepository {
-    
-    
+public class RoleRepository {
     @PersistenceContext
     private EntityManager em;
     
-    public Usuario usuario(String login){
-        String hql = "from Usuario where login=:login";
-        Query query = em.createQuery(hql, Usuario.class);
-        query.setParameter("login", login);
-        return (Usuario) query.getSingleResult();
+    public Role role(String nome){
+        String hql = "from Role where nome=:nome";
+        Query query = em.createQuery(hql, Role.class);
+        query.setParameter("nome", nome);
+        return (Role) query.getSingleResult();
     }
-    
-    public void save(Usuario usuario) {
-        em.persist(usuario);
-    }
-    
-    
 }
