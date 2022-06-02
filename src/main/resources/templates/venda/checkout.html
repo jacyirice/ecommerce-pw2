@@ -57,7 +57,7 @@
                 </div>
                 <div class="form-group col-md-4">
                     <label for="apelido">Cidade</label>
-                    <select class="form-control" id="cidadeSelect" th:name="cidade" th:errorclass="is-invalid" disabled>
+                    <select class="form-control" id="cidadeSelect" th:name="cidade.id" th:errorclass="is-invalid" disabled>
                         <option value='0' selected>Selecione um cidade</option>
                         <option th:each="cidade : ${cidades}" th:value="${cidade.id}" th:text="${cidade.nome}" th:data-estado="${cidade.estado.id}" name="optionCidade" hidden></option>
                     </select>
