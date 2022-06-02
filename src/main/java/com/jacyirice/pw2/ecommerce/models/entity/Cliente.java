@@ -22,13 +22,24 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tb_cliente")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Cliente implements Serializable{
+public abstract class Cliente implements Serializable {
 
     @Id
     @GeneratedValue
     private Integer id;
     @OneToMany(mappedBy = "cliente")
     private List<Venda> vendas;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Endereco> enderecos;
+
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
 
     public List<Venda> getVendas() {
         return vendas;

@@ -54,11 +54,12 @@ and open the template in the editor.
                 <div class="badge badge-primary text-wrap">
                     Olá <span sec:authentication="name">
                 </div>
-                <form th:action="@{/logout}" method="post" class="navbar-form navbar-right my-2 my-lg-0">
+                <form th:action="@{/logout}" method="post" class="navbar-form navbar-right my-2 my-lg-0" sec:authorize="isAuthenticated()">
                     <button type="submit" class="btn btn-dark"> 
                         Sair
                     </button>
                 </form>
+                <a sec:authorize="isAnonymous()" th:href="@{/login}" class="btn btn-dark"> Entrar/Cadastrar</a>
             </nav>
             <hr/>
 

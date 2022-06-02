@@ -25,26 +25,8 @@
         <p th:text="${'Total da compra: '+session.venda.total()}"></p>
 
         <span th:text="${!#strings.isEmpty(error_cart)} ? ${error_cart}"> </span>
-        <form th:if="${session.venda.total()}!=0" th:action="@{/venda/save}" method="GET"> 
-            <!--sec:authorize="hasAnyRole('USER')">-->
-<!--            <div class="form-row">
-                <div class="col"></div>
-                <div class="col">
-                </div>
-                <div class="col">
-                    <select class="form-control form-select" th:classappend="${!#strings.isEmpty(error_client) ? 'is-invalid' : ''}" th:name="clienteId">
-                        <option selected disabled>Selecione um cliente</option>
-                        <option th:each="clientePF : ${clientesPF}" th:value="${clientePF.id}" th:text="${clientePF.nome} + ' - ' + ${clientePF.cpf}"></option>
-                    </select>
-                    <div class="invalid-feedback" th:if="${!#strings.isEmpty(error_client)}" th:text="${error_client}"/>
-                </div>
-            </div>
-            <br/>-->
 
-
-            <input type="submit" class="btn btn-primary" value="Finalizar carrinho">
-
-        </form>
+        <a th:if="${session.venda.total()}!=0" class="btn btn-primary" th:href="@{/venda/checkout}" >Finalizar carrinho</a>
         <a th:unless="${session.venda.total()}!=0" class="btn btn-info" th:href="@{/produto/list}" >Adicionar produtos</a>
     </div>
 

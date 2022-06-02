@@ -5,11 +5,17 @@
  */
 package com.jacyirice.pw2.ecommerce.controller;
 
+import com.jacyirice.pw2.ecommerce.models.entity.Cidade;
 import com.jacyirice.pw2.ecommerce.models.entity.ClientePF;
+import com.jacyirice.pw2.ecommerce.models.entity.Endereco;
+import com.jacyirice.pw2.ecommerce.models.entity.Estado;
 import com.jacyirice.pw2.ecommerce.models.entity.ItemVenda;
 import com.jacyirice.pw2.ecommerce.models.entity.Produto;
 import com.jacyirice.pw2.ecommerce.models.entity.Venda;
+import com.jacyirice.pw2.ecommerce.models.repository.CidadeRepository;
 import com.jacyirice.pw2.ecommerce.models.repository.ClientePFRepository;
+import com.jacyirice.pw2.ecommerce.models.repository.EnderecoRepository;
+import com.jacyirice.pw2.ecommerce.models.repository.EstadoRepository;
 import com.jacyirice.pw2.ecommerce.models.repository.ProdutoRepository;
 import com.jacyirice.pw2.ecommerce.models.repository.VendaRepository;
 import java.time.LocalDate;
@@ -45,10 +51,19 @@ public class VendaController {
     VendaRepository repository;
 
     @Autowired
-    ProdutoRepository repositoryP;
+    ProdutoRepository produtoRepository;
 
     @Autowired
-    ClientePFRepository repositoryCientePF;
+    ClientePFRepository clientePFRepository;
+
+    @Autowired
+    EnderecoRepository enderecoRepository;
+
+    @Autowired
+    CidadeRepository cidadeRepository;
+
+    @Autowired
+    EstadoRepository estadoRepository;
 
     @Autowired
     Venda venda;
@@ -61,7 +76,7 @@ public class VendaController {
             ModelMap model
     ) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        List<ClientePF> clientespf = repositoryCientePF.findByCpf(authentication.getName());
+        List<ClientePF> clientespf = clientePFRepository.findByCpf(authentication.getName());
         if (!clientespf.isEmpty()) {
             model.addAttribute("vendas", repository.findByClienteId(clientespf.get(0).getId()));
         } else if (cliente_id != null && cliente_id > 0) {
@@ -81,7 +96,7 @@ public class VendaController {
             redirectAttributes.addFlashAttribute("produto_id_error", itemVenda.getProduto().getId());
             return new ModelAndView("redirect:/produto/list");
         }
-        Produto produto = repositoryP.produto(itemVenda.getProduto().getId());
+        Produto produto = produtoRepository.produto(itemVenda.getProduto().getId());
 
         itemVenda.setProduto(produto);
         itemVenda.setVenda(venda);
@@ -101,26 +116,48 @@ public class VendaController {
     }
 
     @GetMapping("/carrinho")
-    public ModelAndView form(Venda venda, ModelMap model) {
-        model.addAttribute("clientesPF", repositoryCientePF.clientesPF());
-        return new ModelAndView("/venda/cart", model);
+    public String form() {
+        return "/venda/cart";
     }
 
-    @GetMapping("/save")
-    public ModelAndView save(RedirectAttributes redirectAttributes) {
-//        if (clienteId == null) {
-//            redirectAttributes.addFlashAttribute("error_client", "Selecione um cliente");
-//            return new ModelAndView("redirect:/venda/carrinho");
-//        }
+    @GetMapping("/checkout")
+    public ModelAndView checkout(Endereco endereco, ModelMap model) {
+        List<Estado> estados = estadoRepository.estados();
+        List<Cidade> cidades = cidadeRepository.cidades();
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ClientePF clientepf = clientePFRepository.findByCpf(authentication.getName()).get(0);
+        List<Endereco> enderecos = clientepf.getEnderecos();
+
+        model.addAttribute("estados", estados);
+        model.addAttribute("cidades", cidades);
+        model.addAttribute("enderecos", enderecos);
+
+        return new ModelAndView("/venda/checkout", model);
+    }
+
+    @PostMapping("/save")
+    public ModelAndView save(@Valid Endereco endereco, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors() && endereco.getId() == 0) {
+            return checkout(endereco, new ModelMap());
+        }
+
         if (this.venda.getItensVenda().isEmpty()) {
             redirectAttributes.addFlashAttribute("error_cart", "Carrinho vazio");
             return new ModelAndView("redirect:/venda/carrinho");
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        ClientePF clientepf = repositoryCientePF.findByCpf(authentication.getName()).get(0);
+        ClientePF clientepf = clientePFRepository.findByCpf(authentication.getName()).get(0);
 
+        if (endereco.getId() == 0) {
+            endereco.setCliente(clientepf);
+        } else {
+            endereco.cleanFields();
+        }
+        
         this.venda.setId(null);
+        this.venda.setEndereco(endereco);
         this.venda.setData(LocalDate.now());
         this.venda.setCliente(clientepf);
         repository.save(this.venda);

@@ -67,12 +67,9 @@ public class ClientePFController {
             return form(clientePF);
         }
 
-//        Usuario u = new Usuario();
         Usuario u = clientePF.getUsuario();
         u.setLogin(clientePF.getCpf());
-//        u.setPassword(clientePF.getCpf());
         u.getRoles().add(roleRepository.role("ROLE_USER"));
-//        clientePF.setUsuario(u);
 
         repository.save(clientePF);;
         model.addAttribute("alert_type", "success");

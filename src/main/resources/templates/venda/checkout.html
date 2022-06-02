@@ -1,0 +1,99 @@
+<div th:insert="fragments/header :: modelheader"></div>
+<div class="container">
+    <div th:class="'alert alert-'+${alert_type}" role="alert" th:if="${!#strings.isEmpty(alert_type)}" th:text="${alert_message}"/>
+
+    <form th:action="@{/venda/save}" th:object="${endereco}" method="post">
+        <div class="form-group">
+            <center>Selecione um endereço já cadastrado</center><br/>
+            <select class="form-control" id="enderecosCadastrados" th:name="id">
+                <option value='0' selected>Selecione um endereço</option>
+                <option th:each="enderecoCadastrado : ${enderecos}" th:value="${enderecoCadastrado.id}" th:text="${enderecoCadastrado.apelido}" th:data-descr="${enderecoCadastrado.logradouro+' - '+enderecoCadastrado.cidade.nome+'/'+enderecoCadastrado.cidade.estado.sigla}"></option>
+            </select>
+
+            <br/>
+            <center>Ou</center>
+            <center>Cadastre um novo endereço</center>
+            <br/>
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="apelido">Apelido do endereço</label>
+                    <input type="text" class="form-control"  th:errorclass="is-invalid"
+                           th:field="*{apelido}"  placeholder="Apelido">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('apelido')}" 
+                         th:errors="*{apelido}"/>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="apelido">Logradouro</label>
+                    <input type="text" class="form-control"  th:errorclass="is-invalid"
+                           th:field="*{logradouro}"  placeholder="Logradouro">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('logradouro')}" 
+                         th:errors="*{logradouro}"/>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="apelido">Bairro</label>
+                    <input type="text" class="form-control"  th:errorclass="is-invalid"
+                           th:field="*{bairro}"  placeholder="Bairro">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('bairro')}" 
+                         th:errors="*{bairro}"/>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="apelido">CEP</label>
+                    <input type="text" class="form-control"  th:errorclass="is-invalid"
+                           th:field="*{cep}"  placeholder="CEP">
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('cep')}" 
+                         th:errors="*{cep}"/>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="estadoSelect">Estado</label>
+                    <select class="form-control" id="estadoSelect">
+                        <option value='0' selected>Selecione um estado</option>
+                        <option th:each="estado : ${estados}" th:value="${estado.id}" th:text="${estado.nome}"></option>
+                    </select>
+                    
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="apelido">Cidade</label>
+                    <select class="form-control" id="cidadeSelect" th:name="cidade" th:errorclass="is-invalid" disabled>
+                        <option value='0' selected>Selecione um cidade</option>
+                        <option th:each="cidade : ${cidades}" th:value="${cidade.id}" th:text="${cidade.nome}" th:data-estado="${cidade.estado.id}" name="optionCidade" hidden></option>
+                    </select>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('cidade')}" 
+                         th:errors="*{cidade}"/>
+                </div>
+            </div>
+
+            <div class="text-right">
+                <p th:text="${'Total da compra: '+session.venda.total()}"></p>
+                <button type="submit" class="btn btn-primary">Finalizar compra</button>
+            </div>
+    </form>
+</div>
+
+<script>
+    const showOptionsCidade = (estadoId) => document.querySelectorAll('[data-estado="' + estadoId + '"]').forEach((obj) => {
+        obj.hidden = false
+        });
+    const hideAllOptionsCidade = () => document.querySelectorAll('option[name="optionCidade"]').forEach((obj) => {
+            obj.hidden = true
+        });
+    const cidadeSelect = document.querySelector("#cidadeSelect");
+    const estadoSelect = document.querySelector("#estadoSelect");
+
+    estadoSelect.onchange = () => {
+        hideAllOptionsCidade();
+        if (estadoSelect.selectedIndex == 0) {
+            cidadeSelect.disabled = true;
+            cidadeSelect.selectedIndex = 0;
+            return;
+        }
+        if (cidadeSelect.disabled) cidadeSelect.disabled = false;
+        console.log(estadoSelect.selectedIndex)
+        showOptionsCidade(estadoSelect.selectedIndex);
+
+    }
+</script>
+<div th:insert="fragments/footer :: modelfooter"></div>
