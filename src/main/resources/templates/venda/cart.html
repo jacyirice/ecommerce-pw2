@@ -26,7 +26,7 @@
 
         <span th:text="${!#strings.isEmpty(error_cart)} ? ${error_cart}"> </span>
 
-        <a th:if="${session.venda.total()}!=0" class="btn btn-primary" th:href="@{/venda/checkout}" >Finalizar carrinho</a>
+        <a th:if="${session.venda.total()}!=0" class="btn btn-primary" th:href="@{/venda/checkout}" >Prosseguir</a>
         <a th:unless="${session.venda.total()}!=0" class="btn btn-info" th:href="@{/produto/list}" >Adicionar produtos</a>
     </div>
 

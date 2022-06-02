@@ -7,12 +7,14 @@
             <tr>
                 <th>Id</th>
                 <th>Data</th>
+                <th >Forma de pagamento</th>
                 <th>Total</th>
             </tr>
         </thead>
         <tr>
             <td th:text="${venda.id}"> </td>
             <td th:text="${#temporals.format(venda.data, 'dd/MM/yyyy')}"> </td>
+            <td th:text="${venda.formaPagamento.nome}"> </td>
             <td th:text="${#numbers.formatCurrency(venda.total())}"> </td>
         </tr>
     </table>

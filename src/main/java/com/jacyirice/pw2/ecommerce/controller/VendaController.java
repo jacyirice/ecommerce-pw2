@@ -9,6 +9,7 @@ import com.jacyirice.pw2.ecommerce.models.entity.Cidade;
 import com.jacyirice.pw2.ecommerce.models.entity.ClientePF;
 import com.jacyirice.pw2.ecommerce.models.entity.Endereco;
 import com.jacyirice.pw2.ecommerce.models.entity.Estado;
+import com.jacyirice.pw2.ecommerce.models.entity.FormaPagamento;
 import com.jacyirice.pw2.ecommerce.models.entity.ItemVenda;
 import com.jacyirice.pw2.ecommerce.models.entity.Produto;
 import com.jacyirice.pw2.ecommerce.models.entity.Venda;
@@ -16,6 +17,7 @@ import com.jacyirice.pw2.ecommerce.models.repository.CidadeRepository;
 import com.jacyirice.pw2.ecommerce.models.repository.ClientePFRepository;
 import com.jacyirice.pw2.ecommerce.models.repository.EnderecoRepository;
 import com.jacyirice.pw2.ecommerce.models.repository.EstadoRepository;
+import com.jacyirice.pw2.ecommerce.models.repository.FormaPagamentoRepository;
 import com.jacyirice.pw2.ecommerce.models.repository.ProdutoRepository;
 import com.jacyirice.pw2.ecommerce.models.repository.VendaRepository;
 import java.time.LocalDate;
@@ -64,6 +66,9 @@ public class VendaController {
 
     @Autowired
     EstadoRepository estadoRepository;
+
+    @Autowired
+    FormaPagamentoRepository formaPagamentoRepository;
 
     @Autowired
     Venda venda;
@@ -121,30 +126,33 @@ public class VendaController {
     }
 
     @GetMapping("/checkout")
-    public ModelAndView checkout(Endereco endereco, ModelMap model) {
-        List<Estado> estados = estadoRepository.estados();
-        List<Cidade> cidades = cidadeRepository.cidades();
+    public ModelAndView checkout(Venda venda, ModelMap model, RedirectAttributes redirectAttributes) {
+        if (this.venda.getItensVenda().isEmpty()) {
+            redirectAttributes.addFlashAttribute("error_cart", "Carrinho vazio");
+            return new ModelAndView("redirect:/venda/carrinho");
+        }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ClientePF clientepf = clientePFRepository.findByCpf(authentication.getName()).get(0);
+
+        List<Estado> estados = estadoRepository.estados();
+        List<Cidade> cidades = cidadeRepository.cidades();
         List<Endereco> enderecos = clientepf.getEnderecos();
+        List<FormaPagamento> formasPagamento = formaPagamentoRepository.formasPagamento();
 
         model.addAttribute("estados", estados);
         model.addAttribute("cidades", cidades);
         model.addAttribute("enderecos", enderecos);
+        model.addAttribute("formasPagamento", formasPagamento);
 
         return new ModelAndView("/venda/checkout", model);
     }
 
     @PostMapping("/save")
-    public ModelAndView save(@Valid Endereco endereco, BindingResult result, RedirectAttributes redirectAttributes) {
+    public ModelAndView save(@Valid Venda venda, BindingResult result, RedirectAttributes redirectAttributes) {
+        Endereco endereco = venda.getEndereco();
         if (result.hasErrors() && endereco.getId() == 0) {
-            return checkout(endereco, new ModelMap());
-        }
-
-        if (this.venda.getItensVenda().isEmpty()) {
-            redirectAttributes.addFlashAttribute("error_cart", "Carrinho vazio");
-            return new ModelAndView("redirect:/venda/carrinho");
+            return checkout(venda, new ModelMap(), redirectAttributes);
         }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -154,10 +162,14 @@ public class VendaController {
             endereco.setCliente(clientepf);
         } else {
             endereco.cleanFields();
+            endereco = enderecoRepository.endereco(endereco.getId());
         }
+
+        System.out.println(endereco.toString());
         
         this.venda.setId(null);
         this.venda.setEndereco(endereco);
+        this.venda.setFormaPagamento(venda.getFormaPagamento());
         this.venda.setData(LocalDate.now());
         this.venda.setCliente(clientepf);
         repository.save(this.venda);
